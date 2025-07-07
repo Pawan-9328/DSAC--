@@ -1,6 +1,22 @@
 ### C++ ###
 # Prerequisites
 *.d
+# folder ignore file 
+/binary/*
+
+
+# Ignore all files without extensions (typical C++ binaries)
+*
+
+# But allow source code and folders
+!*/
+!*.cpp
+!*.h
+!*.hpp
+!*.c
+!*.md
+!.gitignore
+
 
 # Compiled Object files
 *.slo

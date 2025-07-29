@@ -4,6 +4,7 @@ using namespace std;
 
 void reachHome(int src, int dest)
 {
+    cout<<"src "<<src<<" dest "<<dest<<endl; 
     if (src == dest)
     {
         cout << "Reached " << endl;

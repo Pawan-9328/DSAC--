@@ -43,34 +43,92 @@ int getLength(Node *&head)
     return len;
 }
 
-void insertAtHead(Node *&head, int data)
+void insertAtHead(Node *&tail, Node *&head, int data)
 {
-    Node *temp = new Node(data);
-    temp->next = head;
-    head->prev = temp;
-    head = temp;
+    // empty L.L
+    if (head == NULL)
+    {
+        Node *temp = new Node(data);
+        head = temp;
+        tail = temp;
+    }
+    else
+    {
+        Node *temp = new Node(data);
+        temp->next = head;
+        head->prev = temp;
+        head = temp;
+    }
 }
 
-void insertAtTail(Node *&tail, int data)
+void insertAtTail(Node *&head, Node *&tail, int data)
 {
-    Node *temp = new Node(data);
-    tail->next = temp;
-    tail = temp;
+    // empty case
+    if (tail == NULL)
+    {
+        Node *temp = new Node(data);
+        tail = temp;
+        head = temp;
+    }
+    else
+    {
+        Node *temp = new Node(data);
+        tail->next = temp;
+        temp->prev = tail;
+        tail = temp;
+    }
+
+    ;
+}
+
+void insertAtPosition(Node *&tail, Node *&head, int position, int data)
+{
+    if (position == 1)
+    {
+        insertAtHead(tail,head, data);
+        return;
+    }
+    Node *temp = head;
+    int cnt = 1;
+
+    while (cnt < position - 1)
+    {
+        temp = temp->next;
+        cnt++;
+    }
+
+    // inserting at least position
+    if (temp->next == NULL)
+    {
+        insertAtTail(head, tail, data);
+        return;
+    }
+
+    // creating a new node
+    Node *nodeToInsert = new Node(data);
+    nodeToInsert->next = temp->next;
+    temp->next->prev = nodeToInsert;
+    temp->next = nodeToInsert;
+    nodeToInsert->prev = temp;
 }
 
 int main()
 {
     Node *node1 = new Node(10);
-    Node *head = node1;
-    Node* tail = node1; 
+    Node *head = NULL;
+    Node *tail = NULL;
     printNode(head);
     cout << "len " << getLength(head) << endl;
 
-    insertAtHead(head, 11);
+    insertAtHead(tail,head, 11);
     printNode(head);
-    insertAtTail(tail, 12);
+    insertAtTail(head, tail, 12);
     printNode(head);
     cout << "len " << getLength(head) << endl;
+    insertAtPosition(tail, head, 1, 100);
+    printNode(head);
+    cout << "head " << head->data << endl;
+    cout << "tail " << tail->data << endl;
 
     return 0;
 }

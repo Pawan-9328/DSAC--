@@ -117,7 +117,7 @@ void deleteNode(int position, Node *&head, Node *&tail)
             cnt++;
         }
         prev->next = curr->next;
-// ✅ Fix here: update tail if last node is deleted
+        // ✅ Fix here: update tail if last node is deleted
         if (curr == tail)
         {
             tail = prev;

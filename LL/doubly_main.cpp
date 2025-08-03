@@ -17,6 +17,17 @@ public:
         this->prev = NULL;
         this->next = NULL;
     }
+
+    ~Node()
+    {
+        int val = this->data;
+        if (next != NULL)
+        {
+            delete next;
+            next = NULL;
+        }
+        cout << "memory free with data " << val << endl;
+    }
 };
 
 // traversing a L.L
@@ -85,7 +96,7 @@ void insertAtPosition(Node *&tail, Node *&head, int position, int data)
 {
     if (position == 1)
     {
-        insertAtHead(tail,head, data);
+        insertAtHead(tail, head, data);
         return;
     }
     Node *temp = head;
@@ -112,6 +123,54 @@ void insertAtPosition(Node *&tail, Node *&head, int position, int data)
     nodeToInsert->prev = temp;
 }
 
+void deleteNode(int position, Node *&head, Node *&tail)
+{
+    // deleting first node
+
+    if (position == 1)
+    {
+        Node *temp = head;
+        temp->next->prev = NULL;
+        head = head->next;
+        temp->next = NULL;
+
+        // // If only one node and it's tail
+        // if (temp == tail)
+        // {
+        //     tail = NULL;
+        // }
+        // // free memory
+        // temp->next = NULL;
+        // delete temp;
+        delete temp;
+    }
+    else
+    {
+        // deleting middle and last node
+        Node *curr = head;
+        Node *prev = NULL;
+        int cnt = 1;
+        while (cnt < position)
+        {
+            prev = curr;
+            curr = curr->next;
+            cnt++;
+        }
+        curr->prev = NULL;
+        prev->next = curr->next;
+        //curr->next = NULL;
+
+        // ✅ Fix here: update tail if last node is deleted
+        //very important edge case 
+        if (curr == tail)
+        {
+            tail = prev;
+        }
+        curr->next = NULL;
+        delete curr;
+    }
+}
+
 int main()
 {
     Node *node1 = new Node(10);
@@ -120,7 +179,7 @@ int main()
     printNode(head);
     cout << "len " << getLength(head) << endl;
 
-    insertAtHead(tail,head, 11);
+    insertAtHead(tail, head, 11);
     printNode(head);
     insertAtTail(head, tail, 12);
     printNode(head);
@@ -129,6 +188,11 @@ int main()
     printNode(head);
     cout << "head " << head->data << endl;
     cout << "tail " << tail->data << endl;
+    printNode(head);
+    deleteNode(3, head, tail);
+    cout << "head " << head->data << endl;
+    cout << "tail " << tail->data << endl;
+    printNode(head);
 
     return 0;
 }
